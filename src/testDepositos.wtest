@@ -1,0 +1,70 @@
+import bicis.*
+import accesorios.*
+import depositos.*
+
+describe "test de depositos" {
+	test "test de deposito1" {
+		// escenario ultima sin luz
+		const b1= new Bicicleta(rodado=28,largo=150,marca="Olmo",accesorios=[new Farolito()])
+		const b2= new Bicicleta(rodado=26,largo=110,marca="Legnano",accesorios=[new Farolito(),new Canasto(volumen=8),new Morral(largo=21,tieneOjoDeGato=true)])
+		const b3= new Bicicleta(rodado=20,largo=90,marca="Legnano",accesorios=[new Morral(largo=6,tieneOjoDeGato=false)])
+		const dep1 = new Deposito(bicis=[b1,b2,b3])
+		
+		// pruebas
+		assert.equals([b1,b2],dep1.bicisRapidas())
+		assert.equals(#{"Olmo","Legnano"},dep1.marcasDeBicis())
+		assert.that(not dep1.hayCompanieras())
+		assert.that(not dep1.esNocturno())
+		assert.that(dep1.tieneBicicletaParaLlevar(10))
+		assert.that(not dep1.tieneBicicletaParaLlevar(50))
+		assert.that(not dep1.seHizoLaLuz())
+	}
+	
+	test "test de deposito2" {
+		// escenario compañeras y sin luz intercalada
+		const b1= new Bicicleta(rodado=26,largo=110,marca="Legnano",accesorios=[new Farolito(),new Canasto(volumen=8),new Morral(largo=21,tieneOjoDeGato=true)])
+		const b2= new Bicicleta(rodado=20,largo=90,marca="Carisma",accesorios=[new Morral(largo=6,tieneOjoDeGato=false)])
+		const b3= new Bicicleta(rodado=28,largo=150,marca="Olmo",accesorios=[new Farolito()])
+		const b4= new Bicicleta(rodado=26,largo=148,marca="Olmo",accesorios=[new Farolito()])
+		const dep2 = new Deposito(bicis=[b1,b2,b3,b4])
+
+		// pruebas
+		assert.equals([b1,b3,b4],dep2.bicisRapidas())
+		assert.equals(#{"Legnano","Carisma","Olmo"},dep2.marcasDeBicis())
+		assert.equals("Olmo",dep2.marcaMasRapida())
+		assert.equals(0, dep2.cargaBicisLargas())
+		assert.that(dep2.hayCompanieras())
+		assert.that(not dep2.esNocturno())
+		assert.that(not dep2.seHizoLaLuz())
+	}
+	
+	test "test de deposito3" {
+		// escenario todas con luz
+		const b1= new Bicicleta(rodado=26,largo=110,marca="Legnano",accesorios=[new Farolito(),new Canasto(volumen=8),new Morral(largo=21,tieneOjoDeGato=true)])
+		const b2= new Bicicleta(rodado=20,largo=90,marca="Carisma",accesorios=[new Morral(largo=6,tieneOjoDeGato=true)])
+		const b3= new Bicicleta(rodado=28,largo=150,marca="Olmo",accesorios=[new Farolito()])
+		const b4= new Bicicleta(rodado=26,largo=148,marca="Carisma",accesorios=[new Farolito()])
+		const dep3 = new Deposito(bicis=[b1,b2,b3,b4])
+		
+		// pruebas
+		assert.equals(#{"Legnano","Carisma","Olmo"},dep3.marcasDeBicis())
+		assert.equals("Olmo",dep3.marcaMasRapida())
+		assert.equals(0,dep3.cargaBicisLargas())
+		assert.that(dep3.esNocturno())
+		assert.that(dep3.seHizoLaLuz())
+	}
+
+	test "test de deposito4" {
+		// escenario primeras sin luz
+		const b1= new Bicicleta(rodado=26,largo=178,marca="Legnano",accesorios=[new Canasto(volumen=8),new Morral(largo=21,tieneOjoDeGato=false)])
+		const b2= new Bicicleta(rodado=20,largo=90,marca="Carisma",accesorios=[new Morral(largo=6,tieneOjoDeGato=false)])
+		const b3= new Bicicleta(rodado=28,largo=150,marca="Olmo",accesorios=[new Farolito()])
+		const b4= new Bicicleta(rodado=26,largo=148,marca="Carisma",accesorios=[new Farolito()])
+		const dep3 = new Deposito(bicis=[b1,b2,b3,b4])
+		
+		// pruebas
+		assert.equals(23,dep3.cargaBicisLargas())
+		assert.that(not dep3.esNocturno())
+		assert.that(dep3.seHizoLaLuz())
+	}
+}

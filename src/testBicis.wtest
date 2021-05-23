@@ -1,0 +1,44 @@
+import bicis.*
+import accesorios.*
+
+describe "test de bicicletas" {
+	test "test de bicicleta1" {
+		// escenario
+		const b1= new Bicicleta(rodado=28,largo=150,marca="Olmo",accesorios=[new Farolito()])
+
+		// pruebas
+		assert.equals(85,b1.altura())
+		assert.equals(34,b1.velocidadCrucero())
+		assert.equals(0,b1.carga())
+		assert.equals(14.5,b1.peso())
+		assert.equals(1,b1.cantidadDeLivianos())
+		assert.that(b1.tieneLuz())
+		
+	}
+	
+	test "test de bicicleta2" {
+		// escenario
+		const b2= new Bicicleta(rodado=26,largo=110,marca="Legnano",accesorios=[new Farolito(),new Canasto(volumen=8),new Morral(largo=21,tieneOjoDeGato=true)])
+
+		// pruebas
+		assert.equals(80,b2.altura())
+		assert.equals(28,b2.velocidadCrucero())
+		assert.equals(23,b2.carga())
+		assert.equals(15.5,b2.peso())
+		assert.equals(2,b2.cantidadDeLivianos())
+		assert.that(b2.tieneLuz())	
+	}
+	
+	test "test de bicicleta3" {
+		// escenario
+		const b3= new Bicicleta(rodado=20,largo=90,marca="Legnano",accesorios=[new Morral(largo=6,tieneOjoDeGato=false)])
+
+		// pruebas
+		assert.equals(65,b3.altura())
+		assert.equals(22,b3.velocidadCrucero())
+		assert.equals(2,b3.carga())
+		assert.equals(11.2,b3.peso())
+		assert.equals(0,b3.cantidadDeLivianos())
+		assert.that(not b3.tieneLuz())
+	}
+}
